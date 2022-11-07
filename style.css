@@ -1,0 +1,28 @@
+* {
+    background: greenyellow;
+}
+
+img {
+    width: 200px;
+    display: block;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+#show-results-btn {
+    padding: 10px;
+}
+
+#show-results-btn:hover{
+    background: red;
+}
+
+main {
+    text-align: center;
+}
+
+footer {
+    margin-top: 50px;
+    text-align: center;
+    justify-content: center;
+}
