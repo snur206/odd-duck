@@ -68,7 +68,7 @@ function handleShowResults() {
 function handleImageClick(event) {
   let productClicked = event.target.alt;
 
-  console.log('image clicked >', productClicked);
+  console.log('image clicked ->', productClicked);
 
   for (let i = 0; i < productArray.length; i++) {
     if (productArray[i].name === productClicked) {
@@ -85,7 +85,7 @@ function handleImageClick(event) {
 
 // #pragma Constructors
 
-function Product(name, fileExtension = 'png') {
+function Products(name, fileExtension = 'jpeg') {
   this.name = name;
   this.imagePath = `img/${name}.${fileExtension}`;
   this.clicks = 0;
@@ -94,25 +94,25 @@ function Product(name, fileExtension = 'png') {
 
 // #pragma Executable
 
-let bag = new Product('bag');
-let banana = new Product('banana');
-let bathroom = new Product('bathroom');
-let boots = new Product('boots');
-let breakfast = new Product('breakfast');
-let bubblegum = new Product('bubblegum');
-let chair = new Product('chair');
-let cthulhu = new Product('cthulhu');
-let dog = new Product('dog-duck');
-let dragon = new Product('dragon');
-let pen = new Product('pen');
-let pet = new Product('pet-sweep');
-let scissors = new Product('scissors');
-let shark = new Product('shark');
-let sweep = new Product('pet-sweep', 'png');
-let tauntaun = new Product('tauntaun');
-let unicorn = new Product('unicorn');
-let water = new Product('water');
-let wine = new Product('wine-glass');
+let bag = new Products('bag');
+let banana = new Products('banana');
+let bathroom = new Products('bathroom');
+let boots = new Products('boots');
+let breakfast = new Products('breakfast');
+let bubblegum = new Products('bubblegum');
+let chair = new Products('chair');
+let cthulhu = new Products('cthulhu');
+let dog = new Products('dog-duck');
+let dragon = new Products('dragon');
+let pen = new Products('pen');
+let pet = new Products('pet-sweep');
+let scissors = new Products('scissors');
+let shark = new Products('shark');
+let sweep = new Products('sweep', 'png');
+let tauntaun = new Products('tauntaun');
+let unicorn = new Products('unicorn');
+let water = new Products('water-can');
+let wine = new Products('wine-glass');
 
 productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog, dragon, pen, pet, scissors, shark, sweep, tauntaun, unicorn, water, wine);
 
