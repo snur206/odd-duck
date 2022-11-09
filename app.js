@@ -17,39 +17,105 @@ let imgThree = document.getElementById('img-three');
 let resultsBtn = document.getElementById('show-results-btn');
 let resultsContainer = document.getElementById('results-container');
 
+// CANVAS DOM REFERENCE (FOR CHART)
+let chartContext = document.getElementById('my-chart').getContext('2d');
+
+function handleShowChart() {
+  if (voteCount === 0) {// todo remove event listeners from images}
+  // CHART OBJECT CREATION
+    let productNames = [];
+    let productViews = [];
+    let productClicks = [];
+
+    for (let i = 0; i < productArray.length; i++) {
+      productNames.push(productArray[i].name);
+      productViews.push(productArray[i].views);
+      productClicks.push(productArray[i].clicks);
+    }
+    let chartConfig = {
+      type: 'bar',
+      data: {
+        labels: productNames,
+        datasets: [{
+          label: '# of Views',
+          data: productViews,
+          backgroundColor: 'yellow',
+        }, {
+          label: '# of Clicks',
+          data: productClicks,
+          backgroundColor: 'aqua',
+        }],
+      },
+      options: {},
+    };
+    let myChart = new Chart(chartContext, chartConfig);
+    resultsBtn.removeEventListener('click', handleShowChart);
+  }
+}
+
 // HELPER/UTILITY FUNCTIONS
 
 function randomProduct() {
   return Math.floor(Math.random() * productArray.length);
 }
 
+let indexArray =[];
+let previousArray = [];
+
+function uniqueImageChecker() {
+  while (indexArray.length < 3) {
+    let randomImage = randomProduct();
+    while (indexArray.includes(randomImage) || previousArray.includes(randomImage)) {
+      randomImage = randomProduct();
+      console.log(randomImage);
+    }
+    indexArray.push(randomImage);
+    previousArray.push(randomImage);
+    console.log(indexArray, previousArray);
+    if (previousArray.length >= 6){
+      previousArray.shift();
+    }
+  }
+  return(indexArray);
+}
+
+
 function renderImages() {
-  let imgOneRandom = randomProduct();
-  let imgTwoRandom = randomProduct();
-  let imgThreeRandom = randomProduct();
+  // let threeNewImages = uniqueImageChecker();
+  // let imgOneRandom = productArray[threeNewImages[0]];
+  // let imgTwoRandom = productArray[threeNewImages[1]];
+  // let imgThreeRandom = productArray[threeNewImages[2]];
 
 
-  while (imgOneRandom === imgTwoRandom) {
-    imgTwoRandom = randomProduct();
-  }
-  while (imgTwoRandom === imgThreeRandom) {
-    imgThreeRandom = randomProduct();
-  }
-  while (imgThreeRandom === imgOneRandom){
-    imgOneRandom = randomProduct();
-  }
+  // while (imgOneRandom === imgTwoRandom) {
+  //   imgTwoRandom = randomProduct();
+  // }
+  // while (imgTwoRandom === imgThreeRandom) {
+  //   imgThreeRandom = randomProduct();
+  // }
+  // while (imgThreeRandom === imgOneRandom){
+  //   imgOneRandom = randomProduct();
+  // }
 
-  imgOne.src = productArray[imgOneRandom].imagePath;
-  imgTwo.src = productArray[imgTwoRandom].imagePath;
-  imgThree.src = productArray[imgThreeRandom].imagePath;
+  uniqueImageChecker();
+  console.log(indexArray);
+  let imgOneIndex = indexArray.shift();
+  let imgTwoIndex = indexArray.shift();
+  let imgThreeIndex = indexArray.shift();
 
-  imgOne.alt = productArray[imgOneRandom].name;
-  imgTwo.alt = productArray[imgTwoRandom].name;
-  imgThree.alt = productArray[imgThreeRandom].name;
 
-  productArray[imgOneRandom].views++;
-  productArray[imgTwoRandom].views++;
-  productArray[imgThreeRandom].views++;
+  imgOne.src = productArray[imgOneIndex].imagePath;
+  imgTwo.src = productArray[imgTwoIndex].imagePath;
+  imgThree.src = productArray[imgThreeIndex].imagePath;
+
+  imgOne.alt = productArray[imgOneIndex].name;
+  imgTwo.alt = productArray[imgTwoIndex].name;
+  imgThree.alt = productArray[imgThreeIndex].name;
+
+  productArray[imgOneIndex].views++;
+  productArray[imgTwoIndex].views++;
+  productArray[imgThreeIndex].views++;
+
 }
 
 // #pragma Event Handler
@@ -73,10 +139,10 @@ function handleImageClick(event) {
   for (let i = 0; i < productArray.length; i++) {
     if (productArray[i].name === productClicked) {
       productArray[i].clicks++;
+      voteCount--;
+      renderImages();
     }
   }
-  voteCount--;
-  renderImages();
 
   if (voteCount === 0) {
     imageContainer.removeEventListener('click', handleImageClick);
@@ -119,4 +185,6 @@ productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cth
 renderImages();
 
 imageContainer.addEventListener('click', handleImageClick);
+resultsBtn.addEventListener('click', handleShowChart);
 resultsBtn.addEventListener('click', handleShowResults);
+
