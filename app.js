@@ -139,6 +139,7 @@ function handleImageClick(event) {
   for (let i = 0; i < productArray.length; i++) {
     if (productArray[i].name === productClicked) {
       productArray[i].clicks++;
+      
       voteCount--;
       renderImages();
     }
