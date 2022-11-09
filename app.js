@@ -22,7 +22,7 @@ let chartContext = document.getElementById('my-chart').getContext('2d');
 
 function handleShowChart() {
   if (voteCount === 0) {// todo remove event listeners from images}
-  // CHART OBJECT CREATION
+    // CHART OBJECT CREATION
     let productNames = [];
     let productViews = [];
     let productClicks = [];
@@ -59,7 +59,7 @@ function randomProduct() {
   return Math.floor(Math.random() * productArray.length);
 }
 
-let indexArray =[];
+let indexArray = [];
 let previousArray = [];
 
 function uniqueImageChecker() {
@@ -72,11 +72,11 @@ function uniqueImageChecker() {
     indexArray.push(randomImage);
     previousArray.push(randomImage);
     console.log(indexArray, previousArray);
-    if (previousArray.length >= 6){
+    if (previousArray.length >= 6) {
       previousArray.shift();
     }
   }
-  return(indexArray);
+  return (indexArray);
 }
 
 
@@ -139,14 +139,22 @@ function handleImageClick(event) {
   for (let i = 0; i < productArray.length; i++) {
     if (productArray[i].name === productClicked) {
       productArray[i].clicks++;
-      
+
       voteCount--;
       renderImages();
     }
   }
-
   if (voteCount === 0) {
     imageContainer.removeEventListener('click', handleImageClick);
+
+    // LOCAL STORAGE
+    // STEP 1: STRINIFY THE DATA
+    let stringifiedProducts = JSON.stringify(productArray);
+
+    console.log('stringified products >>>>>>', stringifiedProducts);
+
+    // STEP 2: ADD TO LOCAL STORAGE
+    localStorage.setItem('myProducts', stringifiedProducts);
   }
 }
 
@@ -159,29 +167,47 @@ function Products(name, fileExtension = 'jpeg') {
   this.views = 0;
 }
 
+Products.prototype.myMethod = function () {
+  return `hello I'm ${this.name}`;
+};
+
 // #pragma Executable
 
-let bag = new Products('bag');
-let banana = new Products('banana');
-let bathroom = new Products('bathroom');
-let boots = new Products('boots');
-let breakfast = new Products('breakfast');
-let bubblegum = new Products('bubblegum');
-let chair = new Products('chair');
-let cthulhu = new Products('cthulhu');
-let dog = new Products('dog-duck');
-let dragon = new Products('dragon');
-let pen = new Products('pen');
-let pet = new Products('pet-sweep');
-let scissors = new Products('scissors');
-let shark = new Products('shark');
-let sweep = new Products('sweep', 'png');
-let tauntaun = new Products('tauntaun');
-let unicorn = new Products('unicorn');
-let water = new Products('water-can');
-let wine = new Products('wine-glass');
+// MORE LOCAL STORAGE CODE
+// STEP 3: PULL STAT OUT OF LOCAL STORAGE
+let retrievedProducts = localStorage.getItem('myProducts');
+console.log('retriecedProducts >>>>>', retrievedProducts);
 
-productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog, dragon, pen, pet, scissors, shark, sweep, tauntaun, unicorn, water, wine);
+// STEP 4: PARSE DATA INTO CODE SO APP CAN SEE
+let parsedProducts = JSON.parse(retrievedProducts);
+console.log('parsedProducts >>>>>>>>', parsedProducts);
+
+if (parsedProducts) {
+  productArray = parsedProducts;
+} else {
+  let bag = new Products('bag');
+  let banana = new Products('banana');
+  let bathroom = new Products('bathroom');
+  let boots = new Products('boots');
+  let breakfast = new Products('breakfast');
+  let bubblegum = new Products('bubblegum');
+  let chair = new Products('chair');
+  let cthulhu = new Products('cthulhu');
+  let dog = new Products('dog-duck');
+  let dragon = new Products('dragon');
+  let pen = new Products('pen');
+  let pet = new Products('pet-sweep');
+  let scissors = new Products('scissors');
+  let shark = new Products('shark');
+  let sweep = new Products('sweep', 'png');
+  let tauntaun = new Products('tauntaun');
+  let unicorn = new Products('unicorn');
+  let water = new Products('water-can');
+  let wine = new Products('wine-glass');
+
+  productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog, dragon, pen, pet, scissors, shark, sweep, tauntaun, unicorn, water, wine);
+}
+console.log('productArray after construction >>>', productArray);
 
 renderImages();
 
